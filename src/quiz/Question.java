@@ -11,8 +11,8 @@ public class Question {
     private final String difficulty;
     private final String category;
     private final String question;
-    private final String correctAnswer;
-    private final List<String> incorrectAnswers;
+    private final String correct_answer;
+    private final List<String> incorrect_answers;
 
     /**
      *
@@ -20,16 +20,16 @@ public class Question {
      * @param difficulty
      * @param category
      * @param question
-     * @param correctAnswer
-     * @param incorrectAnswers
+     * @param correct_answer
+     * @param incorrect_answers
      */
-    public Question(String type, String difficulty, String category, String question, String correctAnswer, List<String> incorrectAnswers) {
+    public Question(String type, String difficulty, String category, String question, String correct_answer, List<String> incorrect_answers) {
         this.type = type;
         this.difficulty = difficulty;
         this.category = category;
         this.question = question;
-        this.correctAnswer = correctAnswer;
-        this.incorrectAnswers = incorrectAnswers;
+        this.correct_answer = correct_answer;
+        this.incorrect_answers = incorrect_answers;
     }
 
     /**
@@ -51,7 +51,7 @@ public class Question {
      * @return a boolean representing if the selected answer was correct
      */
     public boolean checkCorrectAnswer(String answer) {
-        return correctAnswer.equals(answer);
+        return correct_answer.equals(answer);
     }
 
     @Override
@@ -61,8 +61,8 @@ public class Question {
                 "," + "difficulty=" + difficulty  +
                 "," + "category=" + category  +
                 "," + "question=" + question  +
-                "," + "correctAnswer=" + correctAnswer  +
-                "," + "incorrectAnswers" + incorrectAnswers.toString() +
+                "," + "correctAnswer=" + correct_answer  +
+                "," + "incorrectAnswers" + incorrect_answers.toString() +
                 ")";
     }
 }

@@ -44,7 +44,7 @@ public class Controller {
     /**
      * When an answer button is clicked on, the handleCheckAnswer() method will grab the answer text provided.
      * The grabbed text will be sent to the Quiz class to check if it is the correct answer.
-     * @param actionEvent
+     * @param actionEvent represents a click action that occurs when an answer button is clicked
      */
     public void handleCheckAnswer(ActionEvent actionEvent) {
         //Grabs the reference of the button that was just clicked
@@ -76,11 +76,31 @@ public class Controller {
         //Testing print capability of JSON format
         System.out.println(myJson);
 
-        //Trying to load data from API call to QuestionAPILoader class
+        //Testing the quiz functionality. Seeing if a quiz can be created
+        createQuiz(10, 10, "medium", "multiple");
+    }
 
-        URL url = null;
+    //This method creates a quiz based off of input responses
+    private void createQuiz(int numQuestions, int categoryID, String difficulty, String type) {
+        //Due to the nature of the API call, if a user wants to select "Any for any of the 3 choices above (Not including the number of questions), the section is left blank
+        //This means that for the other calls besides numQuestions, I need to make checks to see if I add those argument responses
+
+        //Setting up the url for the API Call
+        String urlLink = "https://opentdb.com/api.php?amount=" + numQuestions;
+
+        //Checks to see if a category was selected
+        if (categoryID != 0) {
+            urlLink += "&category=" + categoryID;
+        }
+        if (!difficulty.isEmpty()) {
+            urlLink += "&difficulty=" + difficulty;
+        }
+        if (!type.isEmpty()) {
+            urlLink += "&type=" + type;
+        }
+
         try {
-            url = new URL("https://opentdb.com/api.php?amount=10");
+            URL url = new URL(urlLink);
 
             //Opens the connection. May throw IOException
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -102,18 +122,21 @@ public class Controller {
                 //Prints out the response
                 //System.out.println(response);
 
-                Gson newGson = new Gson();
+                //Creates a Gson object
+                Gson gson = new Gson();
 
+                //Creates a QuestionAPILoader object, whose job is to read in the text from the API call
                 QuestionAPILoader loader = gson.fromJson(String.valueOf(response), QuestionAPILoader.class);
 
-                //Fixing this line
-                //System.out.println(loader);
+                //Creates a Quiz with the questions obtained from the QuestionAPILoader object
+                Quiz quiz = new Quiz(loader.getQuestions());
             }
-
             //Disconnect from the connection
             connection.disconnect();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+
     }
 }
