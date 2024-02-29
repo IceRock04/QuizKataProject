@@ -1,10 +1,20 @@
 package src;
 
+import com.google.gson.Gson;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.fxml.FXML;
+import src.quiz.Question;
+import src.quiz.QuestionAPILoader;
 import src.quiz.Quiz;
+
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
@@ -53,5 +63,57 @@ public class Controller {
     public void initialize() {
         //this.quiz = new Quiz();
         questionText.textProperty().set("Hello");
+
+        Question sampleQuestion = new Question("multiple", "easy", "Art", "What is my favorite art?", "Abstract", new ArrayList<>(Arrays.asList("Poetry", "Games", "Music")));
+        //System.out.println(sampleQuestion);
+
+        //Testing GSON Library
+        Gson gson = new Gson();
+
+        //Converting to JSON
+        String myJson = gson.toJson(sampleQuestion);
+
+        //Testing print capability of JSON format
+        System.out.println(myJson);
+
+        //Trying to load data from API call to QuestionAPILoader class
+
+        URL url = null;
+        try {
+            url = new URL("https://opentdb.com/api.php?amount=10");
+
+            //Opens the connection. May throw IOException
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+            //Sets the request method, which in this case is "GET"
+            connection.setRequestMethod("GET");
+
+            //Check to see if the connection has a valid response code (200) before proceeding
+            if (connection.getResponseCode() == 200) {
+                //Reads the response
+                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                StringBuilder response = new StringBuilder();
+                String text;
+                while ((text = reader.readLine()) != null) {
+                    response.append(text);
+                }
+                reader.close();
+
+                //Prints out the response
+                //System.out.println(response);
+
+                Gson newGson = new Gson();
+
+                QuestionAPILoader loader = gson.fromJson(String.valueOf(response), QuestionAPILoader.class);
+
+                //Fixing this line
+                //System.out.println(loader);
+            }
+
+            //Disconnect from the connection
+            connection.disconnect();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
