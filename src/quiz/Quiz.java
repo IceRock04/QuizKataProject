@@ -8,6 +8,7 @@ import java.util.List;
 public class Quiz {
 
     private final int score;
+    private int currentQuestionID;
     private final List<Question> questionList;
 
     /**
@@ -18,7 +19,41 @@ public class Quiz {
         this.questionList = questionList;
         //The score will always start at 0
         score = 0;
+        //The Quiz will start on Question 1 (Starts at 0 in perspective of the questionList object)
+        currentQuestionID = 0;
     }
+
+    /**
+     * This method gets the current question number
+     * @return an integer representing the current question number for the current quiz
+     */
+    public int getCurrentQuestionID() {
+        return currentQuestionID;
+    }
+
+    /**
+     * This method checks the current question on the quiz and sees if the selected answer is correct
+     * @param answer the text of the answer that was selected
+     * @return a boolean representing if the selected answer is correct
+     */
+    public boolean checkAnswer(String answer) {
+        return questionList.get(currentQuestionID).checkCorrectAnswer(answer);
+    }
+
+    /**
+     * This method checks to see if there are any more questions available in the quiz, and if so, returns the next question.
+     * @return a Question representing the next question of the quiz
+     */
+    public Question nextQuestion() {
+        Question question = null;
+        //Checks to see if there are any remaining questions left in the quiz
+        if(currentQuestionID < questionList.size()) {
+            question = questionList.get(currentQuestionID);
+            currentQuestionID++;
+        }
+        return question;
+    }
+
 
     @Override
     public String toString() {

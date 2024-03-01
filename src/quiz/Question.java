@@ -45,6 +45,26 @@ public class Question {
         return 40;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public String getCorrectAnswer() {
+        return correct_answer;
+    }
+
+    public List<String> getIncorrectAnswers() {
+        return incorrect_answers;
+    }
+
     /**
      * Checks if the answer selected is the correct answer
      * @param answer is the answer that was selected
@@ -52,6 +72,12 @@ public class Question {
      */
     public boolean checkCorrectAnswer(String answer) {
         return correct_answer.equals(answer);
+    }
+
+    //The purpose of this method is to ensure that special symbols like quotes get correctly implemented.
+    private String parseThroughText(String text) {
+        //text.replaceAll("")
+        return "";
     }
 
     @Override

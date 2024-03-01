@@ -6,10 +6,10 @@
  */
 package src;
 
+import com.simtechdata.sceneonefx.SceneOne;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.util.Objects;
@@ -33,9 +33,11 @@ public class QuizApplication extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("QuizQuestion-Layout.fxml")));
-        stage.setTitle("Quiz Application");
-        stage.setScene(new Scene(root));
-        stage.show();
+        //Loading in the 4 Different Scenes
+        Parent quiz = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("QuizQuestion-Layout.fxml")));
+        //Utilizing the SceneOneFX Library
+        SceneOne.set("Quiz", quiz).size(800.0, 550.0).build();
+        SceneOne.setTitle("Quiz", "Quiz Application");
+        SceneOne.show("Quiz");
     }
 }
