@@ -35,9 +35,12 @@ public class QuizApplication extends Application {
     public void start(Stage stage) throws Exception {
         //Loading in the 4 Different Scenes
         Parent quiz = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("QuizQuestion-Layout.fxml")));
+        Parent endScreen = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("EndScreen-Layout.fxml")));
         //Utilizing the SceneOneFX Library
-        SceneOne.set("Quiz", quiz).size(800.0, 550.0).build();
+        SceneOne.set("Quiz", quiz).size(815.0, 600.0).build();
+        SceneOne.set("End Screen", endScreen).size(815.0, 600.0).build();
         SceneOne.setTitle("Quiz", "Quiz Application");
+        SceneOne.setTitle("End Screen", "Leaderboard");
         SceneOne.show("Quiz");
     }
 }

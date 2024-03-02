@@ -1,6 +1,7 @@
 package src;
 
 import com.google.gson.Gson;
+import com.simtechdata.sceneonefx.SceneOne;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -17,12 +18,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * This is the Controller for the Quiz Scene
  * There are numerous Buttons and Labels that help describe the Quiz functionality
  */
-public class Controller {
+public class QuizController {
 
     private Quiz quiz;
     @FXML
@@ -42,6 +44,7 @@ public class Controller {
     @FXML
     private Label numQuestionText;
     private List<Button> allButtons;
+    private boolean hasClickedAnswer = false;
 
     /**
      * When an answer button is clicked on, the handleCheckAnswer() method will grab the answer text provided.
@@ -51,13 +54,49 @@ public class Controller {
     public void handleCheckAnswer(ActionEvent actionEvent) {
         //Grabs the reference of the button that was just clicked
         Button button = (Button) actionEvent.getTarget();
-        //Grabs the text from the selected answer and checks to see if it is the correct answer
-        if (quiz.checkAnswer(button.getText())) {
-            //The correct answer was selected
-            changeAllButtonText("That is the correct answer!");
-        } else {
-            //The wrong answer was selected
-            changeAllButtonText("That is the wrong answer.");
+        //Checks to see if an answer has been selected
+        if (hasClickedAnswer) {
+            //Makes a check to see if there are any available questions remaining.
+            if (quiz.getCurrentQuestionID() >= quiz.getQuestionList().size()) {
+                //This means that the quiz has finished and the end screen should display
+                SceneOne.show("End Screen");
+                return;
+            }
+            //An answer has already been selected. The next button click will proceed with the next available question
+            changeQuestion();
+            //An answer has not been clicked for the next question, so this value is set to false
+            hasClickedAnswer = false;
+        }
+        else {
+            //Grabs the text from the selected answer and checks to see if it is the correct answer
+            if (quiz.checkAnswer(button.getText())) {
+                //The correct answer was selected
+                button.setText("That is the correct answer!");
+                //Highlights the selected button green
+                button.setStyle("-fx-background-color: #3dff00; ");
+                //Adds the score of the question to the running total
+                quiz.addQuestionScore();
+                //Updates the score text
+                scoreText.setText("Score: " + quiz.getScore());
+            } else {
+                //The wrong answer was selected
+                button.setText("That is the wrong answer.");
+                //Highlights the selected button red
+                button.setStyle("-fx-background-color: #ff0000;");
+                //Finds the correct answer and highlights it green
+                for (Button b: allButtons) {
+                    if (quiz.checkAnswer(b.getText())) {
+                        b.setStyle("-fx-background-color: #3dff00");
+                        break;
+                    }
+                }
+
+
+            }
+            //Sets the question text to inform the user that they can move to the next question
+            questionText.setText("Click any button to continue to the next question.");
+            //State change to notify that the next button click will change to the next question
+            hasClickedAnswer = true;
         }
     }
 
@@ -69,7 +108,7 @@ public class Controller {
         numQuestionText.setText("Question Number: " + quiz.getCurrentQuestionID());
 
         //Sets the text for the question
-        questionText.setText(currentQuestion.getQuestion());
+        questionText.setText(Objects.requireNonNull(currentQuestion).getQuestion());
 
         //scoreText.setText();
         //Setting up a list that will be used to randomly generate the 2 or 4 answers for the questions
@@ -86,25 +125,29 @@ public class Controller {
         if (currentQuestion.getType().equals("multiple")) {
             //There are 4 answers, so all 4 buttons get used
             for (Button button: allButtons) {
+                //Sets the answer text for each button
                 button.setText(allAnswers.getFirst());
+                //Changes the color of the button to the default grey color
+                button.setStyle("-fx-background-color: #7e7e7e;");
+                //Turns on the 3rd and 4th button, assuming that they were turned off from a true/false question
+                button.setVisible(true);
+                //Removes an available answer from the list of answers
                 allAnswers.removeFirst();
             }
         } else {
             //This is a true/false question, so there are only two answers
             for (int i = 0; i < 2; i++) {
+                //Sets the text for the first two buttons
                 allButtons.get(i).setText(allAnswers.getFirst());
+                //Changes the color of the first two buttons to the default grey color
+                allButtons.get(i).setStyle("-fx-background-color: #7e7e7e;");
+                //Turns off Buttons 3 and 4 for answers
+                allButtons.get(i + 2).setVisible(false);
+                //Removes an available answer from the list of answers
                 allAnswers.removeFirst();
             }
         }
     }
-
-    private void changeAllButtonText(String text) {
-        //Changes the text for all the buttons at once
-        for (Button button: allButtons) {
-            button.setText(text);
-        }
-    }
-    //Put some stuff here. Maybe load the Quiz object here and work from there?
     public void initialize() {
         allButtons = new ArrayList<>();
         //Adds all 4 buttons to a Button List. Used in later spots
@@ -112,9 +155,11 @@ public class Controller {
         allButtons.add(answer2);
         allButtons.add(answer3);
         allButtons.add(answer4);
+        //Sets the score text to start at 0 points
+        scoreText.setText("Score: 0");
         //Creates a quiz for the selected input responses:
         //Number of Questions, Category Type, Difficulty, Question Type
-        createQuiz(10, 10, "medium", "multiple");
+        createQuiz(10, 15, "medium", "multiple");
         //Begins the Quiz on the first question
         changeQuestion();
     }
@@ -177,6 +222,7 @@ public class Controller {
             }
             //Disconnect from the connection
             connection.disconnect();
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

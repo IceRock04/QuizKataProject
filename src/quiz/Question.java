@@ -1,5 +1,7 @@
 package src.quiz;
 
+import org.apache.commons.text.StringEscapeUtils;
+
 import java.util.List;
 
 /**
@@ -10,18 +12,18 @@ public class Question {
     private final String type;
     private final String difficulty;
     private final String category;
-    private final String question;
-    private final String correct_answer;
-    private final List<String> incorrect_answers;
+    private String question;
+    private String correct_answer;
+    private List<String> incorrect_answers;
 
     /**
      *
-     * @param type
-     * @param difficulty
-     * @param category
-     * @param question
-     * @param correct_answer
-     * @param incorrect_answers
+     * @param type is the type of question, either multiple choice or true/false.
+     * @param difficulty is the difficulty of the question, which correlates to the total score of the question.
+     * @param category is the category of the question
+     * @param question is the question text
+     * @param correct_answer is the correct answer for the question
+     * @param incorrect_answers are the incorrect answers for the question
      */
     public Question(String type, String difficulty, String category, String question, String correct_answer, List<String> incorrect_answers) {
         this.type = type;
@@ -74,16 +76,30 @@ public class Question {
         return correct_answer.equals(answer);
     }
 
-    //The purpose of this method is to ensure that special symbols like quotes get correctly implemented.
-    private String parseThroughText(String text) {
-        //text.replaceAll("")
-        return "";
+    /**
+     * The purpose of this method is to look through the question and answer text to ensure that special symbols are implemented.
+     * Due to the nature of how JSON assigns values to the Question objects, my original attempt at calling this method in the constructor was a vain attempt
+     * This method will be called on each question in the Quiz class when a quiz is initialized
+     */
+    public void parseThroughText() {
+        question = checkRegex(question);
+        correct_answer = checkRegex(correct_answer);
+        incorrect_answers.replaceAll(this::checkRegex);
+    }
+
+    /**
+     * This is a helper method that fixes any html codes with their appropriate symbols
+     * @param text is the line of text that is to be fixed
+     * @return a corrected line of text
+     */
+    public String checkRegex(String text) {
+        return StringEscapeUtils.unescapeHtml4(text);
     }
 
     @Override
     public String toString() {
         return "Question(" +
-                "type=" + type.toString()  +
+                "type=" + type +
                 "," + "difficulty=" + difficulty  +
                 "," + "category=" + category  +
                 "," + "question=" + question  +
