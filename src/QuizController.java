@@ -60,6 +60,8 @@ public class QuizController {
             if (quiz.getCurrentQuestionID() >= quiz.getQuestionList().size()) {
                 //This means that the quiz has finished and the end screen should display
                 SceneOne.show("End Screen");
+                //Hides the Quiz scene
+                SceneOne.hide("Quiz");
                 return;
             }
             //An answer has already been selected. The next button click will proceed with the next available question
@@ -98,6 +100,30 @@ public class QuizController {
             //State change to notify that the next button click will change to the next question
             hasClickedAnswer = true;
         }
+    }
+
+    /**
+     * This is the initialization step for the Quiz Controller
+     * It gives the Quiz object a reference to the Quiz Singleton
+     * It puts in all the buttons into a list of buttons to be used in other segments of the code
+     * It sets the score text to 0
+     * It generates a quiz based on the information from the Quiz Creator controller and sets it up for the first question
+     */
+    public void initialize() {
+        quiz = Quiz.Quiz();
+        allButtons = new ArrayList<>();
+        //Adds all 4 buttons to a Button List. Used in later spots
+        allButtons.add(answer1);
+        allButtons.add(answer2);
+        allButtons.add(answer3);
+        allButtons.add(answer4);
+        //Sets the score text to start at 0 points
+        scoreText.setText("Score: 0");
+        //Creates a quiz for the selected input responses:
+        //Number of Questions, Category Type, Difficulty, Question Type
+        createQuiz(10, 15, "medium", "multiple");
+        //Begins the Quiz on the first question
+        changeQuestion();
     }
 
     private void changeQuestion() {
@@ -147,21 +173,6 @@ public class QuizController {
                 allAnswers.removeFirst();
             }
         }
-    }
-    public void initialize() {
-        allButtons = new ArrayList<>();
-        //Adds all 4 buttons to a Button List. Used in later spots
-        allButtons.add(answer1);
-        allButtons.add(answer2);
-        allButtons.add(answer3);
-        allButtons.add(answer4);
-        //Sets the score text to start at 0 points
-        scoreText.setText("Score: 0");
-        //Creates a quiz for the selected input responses:
-        //Number of Questions, Category Type, Difficulty, Question Type
-        createQuiz(10, 15, "medium", "multiple");
-        //Begins the Quiz on the first question
-        changeQuestion();
     }
 
     //This method creates a quiz based off of input responses
@@ -218,7 +229,7 @@ public class QuizController {
                 QuestionAPILoader loader = gson.fromJson(String.valueOf(response), QuestionAPILoader.class);
 
                 //Creates a Quiz with the questions obtained from the QuestionAPILoader object
-                quiz = new Quiz(loader.getQuestions());
+                quiz.changeQuestions(loader.getQuestions());
             }
             //Disconnect from the connection
             connection.disconnect();

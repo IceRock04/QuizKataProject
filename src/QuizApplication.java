@@ -11,6 +11,8 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+import src.quiz.Quiz;
 
 import java.util.Objects;
 
@@ -33,14 +35,24 @@ public class QuizApplication extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        SceneOne.newStageEveryScene();
         //Loading in the 4 Different Scenes
         Parent quiz = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("QuizQuestion-Layout.fxml")));
-        Parent endScreen = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("EndScreen-Layout.fxml")));
-        //Utilizing the SceneOneFX Library
+        FXMLLoader testLoader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("EndScreen-Layout.fxml")));
+        Parent endScreen = testLoader.load();
+        //Utilizing the SceneOneFX Library to set up the scenes for the program
         SceneOne.set("Quiz", quiz).size(815.0, 600.0).build();
         SceneOne.set("End Screen", endScreen).size(815.0, 600.0).build();
+        //Setting titles for each of the scenes
         SceneOne.setTitle("Quiz", "Quiz Application");
         SceneOne.setTitle("End Screen", "Leaderboard");
+        //Starts the program by showing the Quiz Creator scene
         SceneOne.show("Quiz");
+        //Setting up a WindowEvent that calls an "initialize" method in EndScreenController when the End Screen Scene is shown
+        SceneOne.setOnShownEvent("End Screen", windowEvent -> {
+            EndScreenController controller = testLoader.getController();
+            //Calls the pseudo initialize method, which activates once the End Screen scene is shown
+            controller.init();
+        });
     }
 }

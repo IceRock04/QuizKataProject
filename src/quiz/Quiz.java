@@ -4,27 +4,40 @@ import java.util.List;
 
 /**
  * The Quiz class will hold all the questions in the quiz, as well as the current score of the player.
+ * There is a Current Question ID number to reference what question the user is on
+ * A list of questions is contained within this class
+ * The Quiz class was converted to a singleton to allow me to call the quiz from numerous controllers without passing the quiz object around
+ *      This is because I will be using the same quiz object in both the Quiz Creator and Quiz Controllers for different reasons
+ *
  */
 public class Quiz {
 
+    private static Quiz quiz_instance = null;
     private int score;
     private int currentQuestionID;
-    private final List<Question> questionList;
+    private List<Question> questionList;
 
     /**
-     * This is the Constructor for the Quiz
-     * @param questionList is a list of questions
+     * This is the Constructor for the Quiz for when it is initially created
      */
-    public Quiz(List<Question> questionList) {
-        this.questionList = questionList;
+    private Quiz() {
         //The score will always start at 0
         score = 0;
         //The Quiz will start on Question 1 (Starts at 0 in perspective of the questionList object)
         currentQuestionID = -1;
-        //Should modify the question's and answer's text for all the question to eliminate special symbols
-        for (Question q: questionList) {
-            q.parseThroughText();
+        //Sets the quiz list to be initially null, as when it is instantiated, no questions will be available
+        questionList = null;
+    }
+
+    /**
+     * A static method that utilizes the Singleton pattern to ensure that only one quiz is ever made
+     * @return the quiz instance
+     */
+    public static Quiz Quiz() {
+        if (quiz_instance == null) {
+            quiz_instance = new Quiz();
         }
+        return quiz_instance;
     }
 
     public int getScore() {
@@ -41,6 +54,21 @@ public class Quiz {
 
     public List<Question> getQuestionList() {
         return questionList;
+    }
+
+    /**
+     * This method is used to change the list of questions for the Quiz
+     * When the questions change, the score and current question reset to their default values
+     * @param questions is a new list of questions
+     */
+    public void changeQuestions(List<Question> questions) {
+        score = 0;
+        currentQuestionID = -1;
+        questionList = questions;
+        //Fixes any HTML code text in the questions
+        for (Question q: questionList) {
+            q.parseThroughText();
+        }
     }
 
     /**
