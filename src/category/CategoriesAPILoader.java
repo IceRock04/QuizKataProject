@@ -18,10 +18,11 @@ public class CategoriesAPILoader {
     }
 
     public HashMap<Integer, String> getCategoryMap() {
+        //Checks to see if the hashmap for the categories is already created
         if (categoryMap == null) {
             categoryMap = new HashMap<>();
+            //Loads the categories from the list of categories into the hashmap
             for (Category category: trivia_categories) {
-                //System.out.println(category);
                 categoryMap.put(category.getId(), category.getName());
             }
         }

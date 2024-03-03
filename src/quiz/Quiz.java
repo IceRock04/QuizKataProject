@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class Quiz {
 
-    private static Quiz quiz_instance = null;
+    private static Quiz quizInstance = null;
     private int score;
     private int currentQuestionID;
     private List<Question> questionList;
@@ -34,10 +34,10 @@ public class Quiz {
      * @return the quiz instance
      */
     public static Quiz Quiz() {
-        if (quiz_instance == null) {
-            quiz_instance = new Quiz();
+        if (quizInstance == null) {
+            quizInstance = new Quiz();
         }
-        return quiz_instance;
+        return quizInstance;
     }
 
     public int getScore() {

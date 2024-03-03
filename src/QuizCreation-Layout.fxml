@@ -3,6 +3,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -14,44 +15,38 @@
             <Font size="30.0" />
          </font>
       </Label>
-      <ChoiceBox fx:id="categoryChoiceBox" layoutX="32.0" layoutY="116.0" prefHeight="25.0" prefWidth="240.0" />
-      <ChoiceBox fx:id="difficultyChoiceBox" layoutX="32.0" layoutY="213.0" prefHeight="25.0" prefWidth="240.0" />
-      <ChoiceBox fx:id="typeChoiceBox" layoutX="32.0" layoutY="320.0" prefHeight="25.0" prefWidth="240.0" />
-      <ChoiceBox fx:id="amountChoiceBox" layoutX="32.0" layoutY="415.0" prefHeight="25.0" prefWidth="240.0" />
+      <ChoiceBox fx:id="categoryChoiceBox" layoutX="14.0" layoutY="116.0" prefHeight="25.0" prefWidth="300.0" />
+      <ChoiceBox fx:id="difficultyChoiceBox" layoutX="14.0" layoutY="251.0" prefHeight="25.0" prefWidth="300.0" />
       <Label alignment="CENTER" layoutX="331.0" layoutY="104.0" prefHeight="50.0" prefWidth="435.0" text="Select a category">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="331.0" layoutY="201.0" prefHeight="50.0" prefWidth="435.0" text="Select a difficulty">
+      <Label alignment="CENTER" layoutX="331.0" layoutY="239.0" prefHeight="50.0" prefWidth="435.0" text="Select a difficulty">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="331.0" layoutY="308.0" prefHeight="50.0" prefWidth="435.0" text="Select a question type">
+      <Label alignment="CENTER" layoutX="331.0" layoutY="363.0" prefHeight="25.0" prefWidth="435.0" text="Input your desired number of questions">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="331.0" layoutY="408.0" prefHeight="25.0" prefWidth="435.0" text="Select a number of questions">
+      <Label alignment="CENTER" layoutX="331.0" layoutY="388.0" prefHeight="25.0" prefWidth="435.0" text="(Amount available depends on category and difficulty)">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="331.0" layoutY="434.0" prefHeight="25.0" prefWidth="435.0" text="(Amount available depends on category, difficulty, and type)">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Label>
-      <Button fx:id="generateQuizButton" layoutX="32.0" layoutY="459.0" mnemonicParsing="false" onAction="#handleQuizGeneration" prefHeight="75.0" prefWidth="240.0" text="Generate Quiz">
+      <Button fx:id="generateQuizButton" layoutX="14.0" layoutY="440.0" mnemonicParsing="false" onAction="#handleQuizGeneration" prefHeight="93.0" prefWidth="300.0" text="Generate Quiz">
          <font>
             <Font size="16.0" />
          </font>
       </Button>
-      <Label fx:id="errorText" alignment="CENTER" layoutX="316.0" layoutY="458.0" prefHeight="75.0" prefWidth="435.0">
+      <Label fx:id="errorText" alignment="CENTER" layoutX="350.0" layoutY="440.0" prefHeight="93.0" prefWidth="435.0">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
+      <TextField fx:id="numQuestionsText" alignment="CENTER" layoutX="14.0" layoutY="388.0" prefHeight="25.0" prefWidth="300.0" promptText="Number of Questions" />
    </children>
 </AnchorPane>

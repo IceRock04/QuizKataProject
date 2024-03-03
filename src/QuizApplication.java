@@ -56,15 +56,31 @@ public class QuizApplication extends Application {
         SceneOne.set("End Screen", endScreen).size(815.0, 600.0).build();
         //Setting titles for each of the scenes
         SceneOne.setTitle("Quiz Creator", "Quiz Creator");
-        SceneOne.setTitle("Quiz", "Quiz Application");
-        SceneOne.setTitle("End Screen", "Leaderboard");
+        SceneOne.setTitle("Quiz", "Quiz");
+        SceneOne.setTitle("End Screen", "End Screen");
         //Starts the program by showing the Quiz Creator scene
         SceneOne.show("Quiz Creator");
+
+        //Setting up a WindowEvent that calls an "initialize" method in QuizController when the Quiz Scene is shown
+        SceneOne.setOnShownEvent("Quiz", windowEvent -> {
+            QuizController quizController = quizQuestionLoader.getController();
+            QuizCreatorController quizCreatorController = quizCreatorLoader.getController();
+            //Calls the pseudo initialize method, which activates once the End Screen scene is shown
+            quizController.init(quizCreatorController.getQuizData());
+        });
         //Setting up a WindowEvent that calls an "initialize" method in EndScreenController when the End Screen Scene is shown
         SceneOne.setOnShownEvent("End Screen", windowEvent -> {
             EndScreenController controller = endScreenLoader.getController();
             //Calls the pseudo initialize method, which activates once the End Screen scene is shown
             controller.init();
         });
+        //Setting up a WindowEvent that calls an "initialize" method in QuizCreatorController when the Quiz Creator Scene is shown
+        //The main reason for this one is to allow the player to look back from the End Screen to the Quiz Creator, creating a full loop in the program flow
+        SceneOne.setOnShownEvent("Quiz Creator", windowEvent -> {
+            QuizCreatorController quizCreatorController = quizCreatorLoader.getController();
+            //Calls the pseudo initialize method, which activates once the End Screen scene is shown
+            quizCreatorController.init();
+        });
+
     }
 }

@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.fxml.FXML;
+import org.apache.commons.lang3.tuple.ImmutableTriple;
 import src.quiz.Question;
 import src.quiz.QuestionAPILoader;
 import src.quiz.Quiz;
@@ -107,7 +108,6 @@ public class QuizController {
      * It gives the Quiz object a reference to the Quiz Singleton
      * It puts in all the buttons into a list of buttons to be used in other segments of the code
      * It sets the score text to 0
-     * It generates a quiz based on the information from the Quiz Creator controller and sets it up for the first question
      */
     public void initialize() {
         quiz = Quiz.Quiz();
@@ -119,9 +119,18 @@ public class QuizController {
         allButtons.add(answer4);
         //Sets the score text to start at 0 points
         scoreText.setText("Score: 0");
-        //Creates a quiz for the selected input responses:
-        //Number of Questions, Category Type, Difficulty, Question Type
-        createQuiz(10, 15, "medium", "multiple");
+
+    }
+
+    /**
+     * This is the "initialize" method that runs when the scenes transfer from the "Quiz Creator" to the actual "Quiz"
+     * It will take in input values from the quiz creator and pass them to this method to properly create a quiz. Then it will begin on the first question
+     * @param quizData represents the quiz selection data from the quiz creator
+     */
+    public void init(ImmutableTriple<Integer, Integer, String> quizData) {
+        //Number of Questions, Category Type, Difficulty
+        System.out.println("Num Questions: " + quizData.getLeft() + "\nCategory ID: " + quizData.getMiddle() + "\nDifficulty: " + quizData.getRight());
+        createQuiz(quizData.getLeft(), quizData.getMiddle(), quizData.getRight());
         //Begins the Quiz on the first question
         changeQuestion();
     }
@@ -176,9 +185,8 @@ public class QuizController {
     }
 
     //This method creates a quiz based off of input responses
-    private void createQuiz(int numQuestions, int categoryID, String difficulty, String type) {
-        //Due to the nature of the API call, if a user wants to select "Any for any of the 3 choices above (Not including the number of questions), the section is left blank.
-        //This means that for the other calls besides numQuestions, I need to make checks to see if I add those argument responses.
+    private void createQuiz(int numQuestions, int categoryID, String difficulty) {
+        //Due to the nature of the API call, if a user wants to select "Any for any of the 2 choices above (Not including the number of questions), the section is left blank.
 
         //Setting up the url for the API Call
         String urlLink = "https://opentdb.com/api.php?amount=" + numQuestions;
@@ -191,11 +199,6 @@ public class QuizController {
         //Checks to see if a Difficulty was selected
         if (!difficulty.isEmpty()) {
             urlLink += "&difficulty=" + difficulty;
-        }
-
-        //Checks to see if a question type was selected
-        if (!type.isEmpty()) {
-            urlLink += "&type=" + type;
         }
 
         try {

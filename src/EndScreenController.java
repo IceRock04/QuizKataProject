@@ -3,14 +3,9 @@ package src;
 import com.simtechdata.sceneonefx.SceneOne;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.stage.WindowEvent;
 import src.quiz.Quiz;
-
-import java.net.URL;
-import java.util.ResourceBundle;
 
 /**
  * This is the controller class for the End Screen (Aka, Leaderboard)
@@ -38,7 +33,10 @@ public class EndScreenController {
      * @param actionEvent represents the user clicking on the play button
      */
     public void handlePlayCommand(ActionEvent actionEvent) {
-        //SceneOne.show("Quiz Creator");
+        //Brings the user back to the Quiz Creator
+        SceneOne.show("Quiz Creator");
+        //Hides the End Screen
+        SceneOne.hide("End Screen");
     }
 
     /**
