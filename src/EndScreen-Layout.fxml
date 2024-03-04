@@ -5,7 +5,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.EndScreenController">
    <children>
       <Label fx:id="totalScoreText" alignment="CENTER" layoutX="215.0" layoutY="22.0" prefHeight="37.0" prefWidth="370.0" text="(Name) Got a Total Score of (Score)!">
@@ -13,17 +12,17 @@
             <Font size="16.0" />
          </font>
       </Label>
-      <Button fx:id="playButton" layoutX="100.0" layoutY="436.0" mnemonicParsing="false" onAction="#handlePlayCommand" prefHeight="100.0" prefWidth="290.0" text="Play Again?">
+      <Button fx:id="playButton" layoutX="14.0" layoutY="336.0" mnemonicParsing="false" onAction="#handlePlayCommand" prefHeight="200.0" prefWidth="375.0" text="Play Again?">
          <font>
             <Font size="16.0" />
          </font>
       </Button>
-      <Button fx:id="exitButton" layoutX="410.0" layoutY="436.0" mnemonicParsing="false" onAction="#handleExitCommand" prefHeight="100.0" prefWidth="290.0" text="Exit Program">
+      <Button fx:id="exitButton" layoutX="410.0" layoutY="336.0" mnemonicParsing="false" onAction="#handleExitCommand" prefHeight="200.0" prefWidth="375.0" text="Exit Program">
          <font>
             <Font size="16.0" />
          </font>
       </Button>
-      <Label fx:id="leaderboardStatsText" alignment="CENTER" layoutX="100.0" layoutY="70.0" prefHeight="350.0" prefWidth="600.0" text="Label">
+      <Label fx:id="victoryText" alignment="CENTER" contentDisplay="CENTER" layoutX="100.0" layoutY="70.0" prefHeight="255.0" prefWidth="600.0" text="Victory Message" wrapText="true">
          <font>
             <Font size="16.0" />
          </font>

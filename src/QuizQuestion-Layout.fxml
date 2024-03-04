@@ -28,17 +28,12 @@
          <font>
             <Font size="16.0" />
          </font></Button>
-      <Label fx:id="scoreText" alignment="CENTER" layoutX="293.0" layoutY="36.0" prefHeight="37.0" prefWidth="213.0" text="Score: " textAlignment="CENTER">
+      <Label fx:id="scoreText" alignment="CENTER" layoutX="487.0" layoutY="36.0" prefHeight="37.0" prefWidth="213.0" text="Score: " textAlignment="CENTER">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <Label fx:id="timerText" alignment="CENTER" layoutX="575.0" layoutY="36.0" prefHeight="37.0" prefWidth="213.0" text="Time Remaining: " textAlignment="CENTER">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </Label>
-      <Label fx:id="numQuestionText" alignment="CENTER" layoutX="10.0" layoutY="36.0" prefHeight="37.0" prefWidth="213.0" text="Question Number: " textAlignment="CENTER">
+      <Label fx:id="numQuestionText" alignment="CENTER" layoutX="98.0" layoutY="36.0" prefHeight="37.0" prefWidth="213.0" text="Question Number: " textAlignment="CENTER">
          <font>
             <Font size="15.0" />
          </font>

@@ -1,7 +1,15 @@
+/*
+ * February 2024
+ * Quiz Kata Project
+ * Name: Jacob Minikel
+ * Created 2/28/2024
+ */
 package src.category;
 
-import java.util.HashMap;
-
+/**
+ * This class is used as a JSON object container
+ * It stores the name and id for a given category
+ */
 public class Category {
     private int id;
     private String name;

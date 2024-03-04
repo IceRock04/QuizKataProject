@@ -1,3 +1,9 @@
+/*
+ * February 2024
+ * Quiz Kata Project
+ * Name: Jacob Minikel
+ * Created 2/28/2024
+ */
 package src;
 
 import com.google.gson.Gson;
@@ -11,11 +17,6 @@ import src.quiz.Question;
 import src.quiz.QuestionAPILoader;
 import src.quiz.Quiz;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,7 +24,10 @@ import java.util.Objects;
 
 /**
  * This is the Controller for the Quiz Scene
- * There are numerous Buttons and Labels that help describe the Quiz functionality
+ * It holds the buttons and labels for the Quiz Scene, and a reference to the Quiz and APIUtil instances
+ * When an answer button is clicked, it checks to see if the selected button is the correct answer, highlighting it either green or red to indicate correctness.
+ * There is a method that handles the current question called changeQuestion(), which manages the text for the question and answers for the current question
+ * The method createQuiz(int, int, String) handles the creation of the quiz, which is based off the user inputs from the Quiz Creator Scene
  */
 public class QuizController {
 
@@ -37,14 +41,13 @@ public class QuizController {
     @FXML
     private Button answer4;
     @FXML
-    private Label timerText;
-    @FXML
     private Label scoreText;
     @FXML
     private Label questionText;
     @FXML
     private Label numQuestionText;
     private List<Button> allButtons;
+    private APIUtil apiUtil;
     private boolean hasClickedAnswer = false;
 
     /**
@@ -67,28 +70,33 @@ public class QuizController {
             }
             //An answer has already been selected. The next button click will proceed with the next available question
             changeQuestion();
+
             //An answer has not been clicked for the next question, so this value is set to false
             hasClickedAnswer = false;
-        }
-        else {
+        } else {
             //Grabs the text from the selected answer and checks to see if it is the correct answer
-            if (quiz.checkAnswer(button.getText())) {
+            if (quiz.checkAnswer(button.getText(), true)) {
                 //The correct answer was selected
                 button.setText("That is the correct answer!");
+
                 //Highlights the selected button green
                 button.setStyle("-fx-background-color: #3dff00; ");
+
                 //Adds the score of the question to the running total
                 quiz.addQuestionScore();
+
                 //Updates the score text
                 scoreText.setText("Score: " + quiz.getScore());
             } else {
                 //The wrong answer was selected
                 button.setText("That is the wrong answer.");
+
                 //Highlights the selected button red
                 button.setStyle("-fx-background-color: #ff0000;");
+
                 //Finds the correct answer and highlights it green
                 for (Button b: allButtons) {
-                    if (quiz.checkAnswer(b.getText())) {
+                    if (quiz.checkAnswer(b.getText(), false)) {
                         b.setStyle("-fx-background-color: #3dff00");
                         break;
                     }
@@ -98,6 +106,7 @@ public class QuizController {
             }
             //Sets the question text to inform the user that they can move to the next question
             questionText.setText("Click any button to continue to the next question.");
+
             //State change to notify that the next button click will change to the next question
             hasClickedAnswer = true;
         }
@@ -110,16 +119,23 @@ public class QuizController {
      * It sets the score text to 0
      */
     public void initialize() {
+        //Getting an instance of the Quiz class
         quiz = Quiz.Quiz();
+
+        //Getting an instance of the APIUtil class
+        apiUtil = APIUtil.APIUtil();
+
+        //Creating an ArrayList containing all 4 buttons for a quiz
         allButtons = new ArrayList<>();
-        //Adds all 4 buttons to a Button List. Used in later spots
+
+        //Adds all 4 buttons to a Button List. Used in later spots for convenience
         allButtons.add(answer1);
         allButtons.add(answer2);
         allButtons.add(answer3);
         allButtons.add(answer4);
+
         //Sets the score text to start at 0 points
         scoreText.setText("Score: 0");
-
     }
 
     /**
@@ -128,13 +144,17 @@ public class QuizController {
      * @param quizData represents the quiz selection data from the quiz creator
      */
     public void init(ImmutableTriple<Integer, Integer, String> quizData) {
-        //Number of Questions, Category Type, Difficulty
-        System.out.println("Num Questions: " + quizData.getLeft() + "\nCategory ID: " + quizData.getMiddle() + "\nDifficulty: " + quizData.getRight());
+        //Creates a quiz based off of the data from Quiz Creator
         createQuiz(quizData.getLeft(), quizData.getMiddle(), quizData.getRight());
+
+        //Changes hasClicked to be false
+        hasClickedAnswer = false;
+
         //Begins the Quiz on the first question
         changeQuestion();
     }
 
+    //This method controls the text for the question label and answer buttons
     private void changeQuestion() {
         //Grabs the information for the next question
         Question currentQuestion = quiz.nextQuestion();
@@ -145,7 +165,6 @@ public class QuizController {
         //Sets the text for the question
         questionText.setText(Objects.requireNonNull(currentQuestion).getQuestion());
 
-        //scoreText.setText();
         //Setting up a list that will be used to randomly generate the 2 or 4 answers for the questions
         List<String> allAnswers = new ArrayList<>();
 
@@ -162,10 +181,13 @@ public class QuizController {
             for (Button button: allButtons) {
                 //Sets the answer text for each button
                 button.setText(allAnswers.getFirst());
+
                 //Changes the color of the button to the default grey color
                 button.setStyle("-fx-background-color: #7e7e7e;");
+
                 //Turns on the 3rd and 4th button, assuming that they were turned off from a true/false question
                 button.setVisible(true);
+
                 //Removes an available answer from the list of answers
                 allAnswers.removeFirst();
             }
@@ -174,10 +196,13 @@ public class QuizController {
             for (int i = 0; i < 2; i++) {
                 //Sets the text for the first two buttons
                 allButtons.get(i).setText(allAnswers.getFirst());
+
                 //Changes the color of the first two buttons to the default grey color
                 allButtons.get(i).setStyle("-fx-background-color: #7e7e7e;");
+
                 //Turns off Buttons 3 and 4 for answers
                 allButtons.get(i + 2).setVisible(false);
+
                 //Removes an available answer from the list of answers
                 allAnswers.removeFirst();
             }
@@ -186,59 +211,24 @@ public class QuizController {
 
     //This method creates a quiz based off of input responses
     private void createQuiz(int numQuestions, int categoryID, String difficulty) {
-        //Due to the nature of the API call, if a user wants to select "Any for any of the 2 choices above (Not including the number of questions), the section is left blank.
-
         //Setting up the url for the API Call
-        String urlLink = "https://opentdb.com/api.php?amount=" + numQuestions;
-
-        //Checks to see if a category was selected
-        if (categoryID != 0) {
-            urlLink += "&category=" + categoryID;
-        }
+        String urlLink = "https://opentdb.com/api.php?amount=" + numQuestions + "&category=" + categoryID;
 
         //Checks to see if a Difficulty was selected
         if (!difficulty.isEmpty()) {
             urlLink += "&difficulty=" + difficulty;
         }
 
-        try {
-            //Creates a URL based off the previously built API Call url (Above)
-            URL url = new URL(urlLink);
+        //Getting the response from the API Call
+        String response = apiUtil.parseAPICall(urlLink);
 
-            //Opens the connection. May throw IOException
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        //Creates a Gson object
+        Gson gson = new Gson();
 
-            //Sets the request method, which in this case is "GET"
-            connection.setRequestMethod("GET");
+        //Creates a QuestionAPILoader object, whose job is to read in the text from the API call
+        QuestionAPILoader loader = gson.fromJson(String.valueOf(response), QuestionAPILoader.class);
 
-            //Check to see if the connection has a valid response code (200) before proceeding
-            if (connection.getResponseCode() == 200) {
-                //Creates a BufferedReader
-                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                //Creates a StringBuilder
-                StringBuilder response = new StringBuilder();
-                String text;
-                //Reads in the data from the API Call and puts it in a StringBuilder
-                while ((text = reader.readLine()) != null) {
-                    response.append(text);
-                }
-                //Closes the BufferedReader
-                reader.close();
-
-                //Creates a Gson object
-                Gson gson = new Gson();
-
-                //Creates a QuestionAPILoader object, whose job is to read in the text from the API call
-                QuestionAPILoader loader = gson.fromJson(String.valueOf(response), QuestionAPILoader.class);
-
-                //Creates a Quiz with the questions obtained from the QuestionAPILoader object
-                quiz.changeQuestions(loader.getQuestions());
-            }
-            //Disconnect from the connection
-            connection.disconnect();
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        //Creates a Quiz with the questions obtained from the QuestionAPILoader object
+        quiz.changeQuestions(loader.getQuestions());
     }
 }

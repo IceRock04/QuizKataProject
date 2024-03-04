@@ -1,7 +1,15 @@
+/*
+ * February 2024
+ * Quiz Kata Project
+ * Name: Jacob Minikel
+ * Created 2/28/2024
+ */
 package src.availableQuestions;
 
-import src.availableQuestions.AvailableQuestions;
-
+/**
+ * This class was created to receive API data for the number of questions available for a specific category
+ * It stores the id for the given category, as well as an object that holds the number of available questions for each difficulty
+ */
 public class AvailableQuestionsAPILoader {
     private Integer category_id;
 

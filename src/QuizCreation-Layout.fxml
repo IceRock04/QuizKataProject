@@ -7,7 +7,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.QuizCreatorController">
    <children>
       <Label alignment="CENTER" layoutX="182.0" layoutY="14.0" prefHeight="93.0" prefWidth="435.0" text="Quiz Creator">
@@ -17,22 +16,22 @@
       </Label>
       <ChoiceBox fx:id="categoryChoiceBox" layoutX="14.0" layoutY="116.0" prefHeight="25.0" prefWidth="300.0" />
       <ChoiceBox fx:id="difficultyChoiceBox" layoutX="14.0" layoutY="251.0" prefHeight="25.0" prefWidth="300.0" />
-      <Label alignment="CENTER" layoutX="331.0" layoutY="104.0" prefHeight="50.0" prefWidth="435.0" text="Select a category">
+      <Label alignment="CENTER" layoutX="331.0" layoutY="104.0" prefHeight="50.0" prefWidth="435.0" text="Select a category" textAlignment="CENTER">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="331.0" layoutY="239.0" prefHeight="50.0" prefWidth="435.0" text="Select a difficulty">
+      <Label alignment="CENTER" layoutX="331.0" layoutY="239.0" prefHeight="50.0" prefWidth="435.0" text="Select a difficulty (Optional)" textAlignment="CENTER">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="331.0" layoutY="363.0" prefHeight="25.0" prefWidth="435.0" text="Input your desired number of questions">
+      <Label alignment="CENTER" layoutX="331.0" layoutY="363.0" prefHeight="25.0" prefWidth="435.0" text="Input your desired number of questions" textAlignment="CENTER">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="331.0" layoutY="388.0" prefHeight="25.0" prefWidth="435.0" text="(Amount available depends on category and difficulty)">
+      <Label alignment="CENTER" layoutX="331.0" layoutY="388.0" prefHeight="25.0" prefWidth="435.0" text="(Amount available depends on category and difficulty)" textAlignment="CENTER">
          <font>
             <Font size="16.0" />
          </font>
@@ -42,7 +41,7 @@
             <Font size="16.0" />
          </font>
       </Button>
-      <Label fx:id="errorText" alignment="CENTER" layoutX="350.0" layoutY="440.0" prefHeight="93.0" prefWidth="435.0">
+      <Label fx:id="errorText" alignment="CENTER" layoutX="331.0" layoutY="440.0" prefHeight="93.0" prefWidth="435.0" textAlignment="CENTER" wrapText="true">
          <font>
             <Font size="16.0" />
          </font>

@@ -1,5 +1,16 @@
+/*
+ * February 2024
+ * Quiz Kata Project
+ * Name: Jacob Minikel
+ * Created 2/28/2024
+ */
 package src.availableQuestions;
 
+/**
+ * This class is used as a JSON object container
+ * It stores the number of questions for the total amount of available questions
+ * It also stores the number of questions for each difficulty
+ */
 public class AvailableQuestions {
     private int total_question_count;
 
@@ -13,6 +24,7 @@ public class AvailableQuestions {
      * This method checks the chosen question difficulty and returns the total number of available questions
      * @param type represents the integer version of each difficulty option
      * @return an integer representing the number of available questions
+     * @throws IllegalStateException if an unexpected difficulty options is given
      */
     public int getQuestionType(int type) {
         return switch (type) {

@@ -1,3 +1,9 @@
+/*
+ * February 2024
+ * Quiz Kata Project
+ * Name: Jacob Minikel
+ * Created 2/28/2024
+ */
 package src.quiz;
 
 
@@ -5,6 +11,7 @@ import java.util.List;
 
 /**
  * This class is for receiving the data from the API Call made in the Controller class.
+ * It holds a response code from the API call, as well as a list of questions (To be used by the Quiz Class)
  * The main reason why this class exists is so that I can handle different response codes from the API call,
  *      assuming that it does not return zero.
  */
@@ -12,13 +19,8 @@ public class QuestionAPILoader {
     private int response_code;
     private List<Question> results;
 
-
-    private int getResponseCode() {
-        return response_code;
-    }
-
     public List<Question> getQuestions() {
-        return switch (getResponseCode()) {
+        return switch (response_code) {
             case 0 -> results;
             case 1 -> throw new RuntimeException("Not Enough Questions Available");
             case 2 -> throw new RuntimeException("Invalid Parameter In API Call");
@@ -40,7 +42,4 @@ public class QuestionAPILoader {
         }
         return result.toString();
     }
-
-
-
 }

@@ -1,3 +1,9 @@
+/*
+ * February 2024
+ * Quiz Kata Project
+ * Name: Jacob Minikel
+ * Created 2/28/2024
+ */
 package src.quiz;
 
 import org.apache.commons.text.StringEscapeUtils;
@@ -6,7 +12,9 @@ import java.util.List;
 
 /**
  * This is the Question class, where all the required data for a question is stored.
- * There are multiple variables, such as question type, difficulty, question text, category, and answers.
+ * There are multiple variables, such as question type, difficulty, category, question text, and answers.
+ * It contains methods to get the score of the question (depends on difficulty) and checking the correct answer for the question
+ * There is a private method to fix any HTML Codes found in the question text (From the API Call)
  */
 public class Question {
     private final String type;
@@ -17,7 +25,7 @@ public class Question {
     private List<String> incorrect_answers;
 
     /**
-     *
+     * This is the constructor for the Question Object
      * @param type is the type of question, either multiple choice or true/false.
      * @param difficulty is the difficulty of the question, which correlates to the total score of the question.
      * @param category is the category of the question
@@ -53,10 +61,6 @@ public class Question {
 
     public String getQuestion() {
         return question;
-    }
-
-    public String getCategory() {
-        return category;
     }
 
     public String getCorrectAnswer() {
