@@ -17,6 +17,7 @@ After completing the quiz, the user is informed of their total score and the num
 From here, the user may either create another quiz or exit the program.
 
 *This is a basic overview of the different classes and their basic functions. More details are within Javadocs comments of each respective file*
+
 File Aspects:
 The application consists of a QuizApplication file, which loads in the different FXML files and creates SceneOneFX scenes for each one. 
 There are 3 different controllers throughout the program:
