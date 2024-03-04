@@ -4,7 +4,7 @@ https://opentdb.com/api_config.php
 
 *This repository was made for a Direct Supply project*
 
-JavaFx - Version 21.0.2 and JDK - Version 21.0.2
+JavaFx - Version 21.0.2 and SDK - Oracle OpenJDK Version 21.0.2
 
 Libraries Used:
 
