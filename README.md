@@ -7,8 +7,11 @@ https://opentdb.com/api_config.php
 Libraries Used:
 
 SceneOneFX - Version 1.3.9
+
 Apache Commons Lang 3 - Version 3.13.0
+
 Apache Commons Text - Version 1.11.0
+
 Gson - Version 2.10.1
 
 Program Sequence:
